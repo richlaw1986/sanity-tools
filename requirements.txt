@@ -1,4 +1,0 @@
-streamlit
-fuzzywuzzy
-pandas
-mpmath
