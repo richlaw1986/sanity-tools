@@ -3,7 +3,6 @@ pandas
 numpy
 pillow
 fuzzywuzzy
-base64
 plotly
 plotly.io
 prophet
