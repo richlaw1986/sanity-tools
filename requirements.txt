@@ -7,14 +7,7 @@ plotly
 prophet
 pytrends
 requests
-random
-csv
-datetime
-time
-argparse
 fasttext
 gensim
 nltk
-re
-string
 json
