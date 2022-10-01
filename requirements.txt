@@ -10,3 +10,5 @@ requests
 fasttext
 gensim
 nltk
+fake_useragent
+bs4
