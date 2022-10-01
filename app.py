@@ -223,6 +223,7 @@ if select =='Internal link tool':
         row = pd.DataFrame()
         finalframe = pd.DataFrame()
         cf = pd.read_csv(crawl_file, header=None)
+        cf = cf.set_index('Address')
         for index, row in cf.iterrows():
             #for row in csv.reader(f):
                 url = row
