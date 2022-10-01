@@ -222,8 +222,8 @@ if select =='Internal link tool':
         fulldoc = " "
         row = pd.DataFrame()
         finalframe = pd.DataFrame()
-        with open(crawl_file) as f:
-            for row in csv.reader(f):
+        for index, row in crawl_file.iterrows():
+            #for row in csv.reader(f):
                 url = row[0]
                 response = requests.get(url, {"User-Agent": ua.random},headers={"User-Agent": ua.random})
                 soup = BeautifulSoup(response.text, "html.parser")
