@@ -225,7 +225,7 @@ if select =='Internal link tool':
         cf = pd.read_csv(crawl_file, header=None)
         for index, row in cf.iterrows():
             #for row in csv.reader(f):
-                url = row[0]
+                url = row
                 response = requests.get(url, {"User-Agent": ua.random},headers={"User-Agent": ua.random})
                 soup = BeautifulSoup(response.text, "html.parser")
                 result_div = soup.find_all('p')
