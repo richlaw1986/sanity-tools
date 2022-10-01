@@ -226,7 +226,7 @@ if select =='Internal link tool':
         cf = cf.set_index('Address')
         for index, row in cf.iterrows():
             #for row in csv.reader(f):
-                url = row
+                url = index
                 response = requests.get(url, {"User-Agent": ua.random},headers={"User-Agent": ua.random})
                 soup = BeautifulSoup(response.text, "html.parser")
                 result_div = soup.find_all('p')
