@@ -186,7 +186,7 @@ def get_table_download_link_ten(df):
     in:  dataframe
     out: href string
     """
-    csv = df.to_csv(index=True)
+    csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
     href = f'<a href="data:file/csv;base64,{b64}" download="internal-link-documents.csv">Download documents to add internal links</a>'
     return href
