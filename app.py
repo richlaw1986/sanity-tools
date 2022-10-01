@@ -203,7 +203,7 @@ def save_model(model, path="model.bin"):
 
 with open("style.css") as f:
     st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
-image = Image.open('sanity-seo-tools.PNG')
+image = Image.open('sanity-seo-tools.png')
 st.sidebar.image(image)
 st.text("")
 st.sidebar.title("Available tools")
