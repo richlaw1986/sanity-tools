@@ -213,8 +213,9 @@ select = st.sidebar.selectbox('Choose tool', ['Internal link tool', 'Bulk Google
 st.text("")
 if select =='Internal link tool':
     st.markdown("<h1 style='font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:2rem'><strong>Internal link tool</strong></h2>", unsafe_allow_html=True)
-    st.markdown("<p style='font-weight:normal'>4. <strong>Upload your crawl file here:</strong></p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-weight:normal'>1. <strong>Choose which phrase you want to find to insert links:</strong></p>", unsafe_allow_html=True)
     query = st.text_input('What query do you want to add internal links for?', 'headless CMS')
+    st.markdown("<p style='font-weight:normal'>2. <strong>Upload your crawl file here:</strong></p>", unsafe_allow_html=True)
     crawl_file = st.file_uploader("Choose a CSV file", type='csv', key='100')
     if crawl_file is not None:
         ua = UserAgent()
