@@ -27,6 +27,8 @@ import nltk
 from nltk.corpus import stopwords
 import re
 import string
+from fake_useragent import UserAgent
+from bs4 import BeautifulSoup
 
 import json
 
@@ -179,6 +181,16 @@ def get_table_download_link_nine(df):
     href = f'<a href="data:file/csv;base64,{b64}" download="trend-data.csv">Download trend data</a>'
     return href
 
+def get_table_download_link_ten(df):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded
+    in:  dataframe
+    out: href string
+    """
+    csv = df.to_csv(index=True)
+    b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+    href = f'<a href="data:file/csv;base64,{b64}" download="internal-link-documents.csv">Download documents to add internal links</a>'
+    return href
+
 # Cache trained model
 #@st.experimental_singleton
 def get_model():
@@ -191,14 +203,48 @@ def save_model(model, path="model.bin"):
 
 with open("style.css") as f:
     st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
-image = Image.open('sanity-seo-tools.png')
+image = Image.open('sanity-seo-tools.PNG')
 st.sidebar.image(image)
 st.text("")
 st.sidebar.title("Available tools")
 st.text("")
 st.sidebar.markdown("### Which tool do you need?")
-select = st.sidebar.selectbox('Choose tool', ['Bulk Google Trends tool', 'Forecasting tool', 'Fuzzy matching tool', 'Text classifier'], key='1')
+select = st.sidebar.selectbox('Choose tool', ['Internal link tool', 'Bulk Google Trends tool', 'Forecasting tool', 'Fuzzy matching tool', 'Text classifier'], key='1')
 st.text("")
+if select =='Internal link tool':
+    st.markdown("<h1 style='font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:2rem'><strong>Internal link tool</strong></h2>", unsafe_allow_html=True)
+    st.markdown("<p style='font-weight:normal'>4. <strong>Upload your crawl file here:</strong></p>", unsafe_allow_html=True)
+    query = st.text_input('What query do you want to add internal links for?', 'headless CMS')
+    crawl_file = st.file_uploader("Choose a CSV file", type='csv', key='100')
+    if crawl_file is not None:
+        ua = UserAgent()
+        fulldoc = " "
+        row = pd.DataFrame()
+        finalframe = pd.DataFrame()
+        with open(crawl_file) as f:
+            for row in csv.reader(f):
+                url = row[0]
+                response = requests.get(url, {"User-Agent": ua.random},headers={"User-Agent": ua.random})
+                soup = BeautifulSoup(response.text, "html.parser")
+                result_div = soup.find_all('p')
+                for r in result_div:
+                    try:
+                        docstring = r.get_text()
+                        if docstring != '':
+                            fulldoc = fulldoc + " " + docstring
+                    except:
+                        continue
+                try:
+                    title = soup.find('title').get_text()
+                except:
+                    continue
+                row = {'URL':[url],'Title':[title],'Document':[fulldoc]}
+                dfrow = pd.DataFrame(row)
+                finalframe = finalframe.append(dfrow)
+                fulldoc = " "
+        finalframe2 = finalframe[finalframe['Document'].str.contains(query, case=False)==True]
+        st.markdown('### Download the full dataset:')
+        st.markdown(get_table_download_link_ten(finalframe2), unsafe_allow_html=True)
 if select =='Bulk Google Trends tool':
     st.markdown("<h1 style='font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:2rem'><strong>Bulk Google Trends Tool</strong></h2>", unsafe_allow_html=True)
     st.markdown("<p style='font-weight:normal'>1. Make a list of phrases you want to check in Google Sheets. <strong>Please stick to 20 phrases each day</strong>.</p>", unsafe_allow_html=True)
