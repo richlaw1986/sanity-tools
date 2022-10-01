@@ -222,7 +222,8 @@ if select =='Internal link tool':
         fulldoc = " "
         row = pd.DataFrame()
         finalframe = pd.DataFrame()
-        for index, row in crawl_file.iterrows():
+        cf = pd.read_csv(crawl_file, header=None)
+        for index, row in cf.iterrows():
             #for row in csv.reader(f):
                 url = row[0]
                 response = requests.get(url, {"User-Agent": ua.random},headers={"User-Agent": ua.random})
